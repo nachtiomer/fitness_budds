@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>815943040735-ffldf1oprs40md3a5vlt6v81v1h0jvqh.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.815943040735-ffldf1oprs40md3a5vlt6v81v1h0jvqh</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBmNCS1XdwYiTINJ0BCXBA5H9q-sZCp_t0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>815943040735</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.workout.fitnessbudds</string>
+	<key>PROJECT_ID</key>
+	<string>fitnessbudds-eae71</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fitnessbudds-eae71.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:815943040735:ios:477d468535b57301a8f36a</string>
+	<key>DATABASE_URL</key>
+	<string>https://fitnessbudds-eae71.firebaseio.com</string>
+</dict>
+</plist>

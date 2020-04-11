@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "815943040735",
+    "firebase_url": "https://fitnessbudds-eae71.firebaseio.com",
+    "project_id": "fitnessbudds-eae71",
+    "storage_bucket": "fitnessbudds-eae71.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815943040735:android:54568d567bd18441a8f36a",
+        "android_client_info": {
+          "package_name": "com.workout.fitnessbudds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815943040735-nlpuiirlb1k3f639lrk6rvharr6io61l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.workout.fitnessbudds",
+            "certificate_hash": "a37610cfe1ceb543691310e99976d2c739268484"
+          }
+        },
+        {
+          "client_id": "815943040735-8jstqr8jmdilcq5k178m51dnti9hqd9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIRU-0LoLHL3Xru7xazuWP_rigiU6NyIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815943040735-8jstqr8jmdilcq5k178m51dnti9hqd9k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "815943040735-ffldf1oprs40md3a5vlt6v81v1h0jvqh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.workout.fitnessbudds"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
