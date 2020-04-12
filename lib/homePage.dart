@@ -17,24 +17,52 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Future<bool> _onBackPressed() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Are you gay?"),
+            content: Text("Press yes if you are gay"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("NO"),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              ),
+              FlatButton(
+                child: Text("YES"),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+              )
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+      body: WillPopScope(
+        onWillPop: _onBackPressed,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'You have pushed the button this many times:',
+              ),
+              Text(
+                '$_counter',
+                style: Theme.of(context).textTheme.display1,
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
