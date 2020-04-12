@@ -6,7 +6,7 @@ import 'dart:async';
 //
 void main() => runApp(MaterialApp(
       theme: ThemeData(
-          primaryColor: Colors.blueAccent, accentColor: Colors.yellowAccent),
+          primaryColor: Colors.amber, accentColor: Colors.amber),
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     ));
@@ -20,9 +20,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 1), () {
-      Navigator.of(context).pop(true);
-      Navigator.push(
+    Timer(Duration(seconds: 3), () {
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginPage()),
       );
@@ -58,24 +57,8 @@ class _SplashScreenState extends State<SplashScreen> {
                       padding: EdgeInsets.only(top: 10.0),
                     ),
                     Image.asset("assets/bodybuilderflex.gif"),
-//                        CircleAvatar(
-//                          backgroundColor: Colors.white,
-//                          radius: 50.0,
-//                          child: Icon(
-//                            Icons.pregnant_woman,
-//                            color: Colors.black,
-//                            size: 50.0,
-//                          ),
-//                        ),
                     Padding(
                       padding: EdgeInsets.only(top: 10.0),
-                    ),
-                    Text(
-                      "Not for Pregnants ;)",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
