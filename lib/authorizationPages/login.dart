@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           loggedIn = true;
         });
-      } else {}
+      }
     });
   }
 
@@ -34,7 +34,9 @@ class _LoginPageState extends State<LoginPage> {
     AuthResult result;
     switch (type) {
       case "FB":
-        FacebookLoginResult facebookLoginResult = await _handleFBSignIn();
+        FacebookLogin facebookLogin = FacebookLogin();
+        FacebookLoginResult facebookLoginResult =
+            await facebookLogin.logIn(['email']);
         final accessToken = facebookLoginResult.accessToken.token;
         if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
           final facebookAuthCred =
@@ -74,24 +76,6 @@ class _LoginPageState extends State<LoginPage> {
           builder: (context) => ProfileScreen(detailsUser: details),
         )); //MyHomePage(title:'FitnessBudds'))); //
     return userDetails;
-  }
-
-  Future<FacebookLoginResult> _handleFBSignIn() async {
-    FacebookLogin facebookLogin = FacebookLogin();
-    FacebookLoginResult facebookLoginResult =
-        await facebookLogin.logIn(['email']);
-    switch (facebookLoginResult.status) {
-      case FacebookLoginStatus.cancelledByUser:
-        print("Cancelled");
-        break;
-      case FacebookLoginStatus.error:
-        print("error");
-        break;
-      case FacebookLoginStatus.loggedIn:
-        print("Logged In");
-        break;
-    }
-    return facebookLoginResult;
   }
 
   Future<GoogleSignInAccount> _handleGoogleSignIn() async {
