@@ -118,6 +118,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_facebook_login:
+    dependency: "direct main"
+    description:
+      name: flutter_facebook_login
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   flutter_signin_button:
     dependency: "direct main"
     description:
@@ -136,7 +143,7 @@ packages:
     source: sdk
     version: "0.0.0"
   font_awesome_flutter:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: font_awesome_flutter
       url: "https://pub.dartlang.org"
@@ -164,7 +171,7 @@ packages:
     source: hosted
     version: "0.8.4"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
@@ -252,13 +259,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.5"
-  splashscreen:
-    dependency: "direct main"
-    description:
-      name: splashscreen
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
   stack_trace:
     dependency: transitive
     description:
