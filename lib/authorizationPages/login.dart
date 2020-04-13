@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessbudds/homePage.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../ProfileScreen.dart';
-import '../main.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class LoginPage extends StatefulWidget {
@@ -16,11 +14,12 @@ class _LoginPageState extends State<LoginPage> {
   String _password, _email, _errorMessage;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn _googlSignIn = GoogleSignIn(
+  // TODO: move to configuration file
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
       scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']);
 
   Future<FirebaseUser> _loginWithGoogle() async {
-    final GoogleSignInAccount googleUser = await _googlSignIn.signIn();
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
 
@@ -53,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<FirebaseUser> _loginWithFacebook() async {
     // TODO: update for facebook
-    final GoogleSignInAccount googleUser = await _googlSignIn.signIn();
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
 
