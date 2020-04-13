@@ -2,8 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessbudds/homePage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import '../ProfileScreen.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as JSON;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -14,21 +17,46 @@ class _LoginPageState extends State<LoginPage> {
   String _password, _email, _errorMessage;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  // TODO: move to configuration file
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']);
+  var loggedIn = false;
+  var firebaseAuth = FirebaseAuth.instance;
 
-  Future<FirebaseUser> _loginWithGoogle() async {
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+  void initiateSignIn(String type) {
+    _handleSignIn(type).then((result) {
+      if (result != null) {
+        setState(() {
+          loggedIn = true;
+        });
+      }
+    });
+  }
 
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    AuthResult result = await _firebaseAuth.signInWithCredential(credential);
+  Future<FirebaseUser> _handleSignIn(String type) async {
+    AuthResult result;
+    switch (type) {
+      case "FB":
+        FacebookLogin facebookLogin = FacebookLogin();
+        FacebookLoginResult facebookLoginResult =
+            await facebookLogin.logIn(['email']);
+        final accessToken = facebookLoginResult.accessToken.token;
+        if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
+          final facebookAuthCred =
+              FacebookAuthProvider.getCredential(accessToken: accessToken);
+          result = await firebaseAuth.signInWithCredential(facebookAuthCred);
+        } else {
+          return null;
+        }
+        break;
+      case "G":
+        try {
+          GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
+          final googleAuth = await googleSignInAccount.authentication;
+          final googleAuthCred = GoogleAuthProvider.getCredential(
+              idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+          result = await firebaseAuth.signInWithCredential(googleAuthCred);
+        } catch (error) {
+          return null;
+        }
+    }
     FirebaseUser userDetails = result.user;
     ProviderDetails providerInfo = ProviderDetails(userDetails.providerId);
 
@@ -50,37 +78,12 @@ class _LoginPageState extends State<LoginPage> {
     return userDetails;
   }
 
-  Future<FirebaseUser> _loginWithFacebook() async {
-    // TODO: update for facebook
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    AuthResult result = await _firebaseAuth.signInWithCredential(credential);
-    FirebaseUser userDetails = result.user;
-    ProviderDetails providerInfo = ProviderDetails(userDetails.providerId);
-
-    List<ProviderDetails> providerData = List<ProviderDetails>();
-    providerData.add(providerInfo);
-
-    UserDetails details = UserDetails(
-      userDetails.providerId,
-      userDetails.displayName,
-      userDetails.photoUrl,
-      userDetails.email,
-      providerData,
-    );
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfileScreen(detailsUser: details),
-        )); //MyHomePage(title:'FitnessBudds'))); //
-    return userDetails;
+  Future<GoogleSignInAccount> _handleGoogleSignIn() async {
+    // TODO: move to configuration file
+    GoogleSignIn googleSignIn = GoogleSignIn(
+        scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']);
+    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    return googleSignInAccount;
   }
 
   bool _validateEmail(email) {
@@ -155,14 +158,14 @@ class _LoginPageState extends State<LoginPage> {
                   Buttons.Google,
                   text: "Sign up with Google",
                   onPressed: () {
-                    _loginWithGoogle();
+                    initiateSignIn("G");
                   },
                 ),
                 SignInButton(
                   Buttons.Facebook,
                   text: "Sign up with Facebook",
                   onPressed: () {
-                    _loginWithFacebook();
+                    initiateSignIn("FB");
                   },
                 ),
               ],
