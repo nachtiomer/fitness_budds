@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
       fit: StackFit.expand,
       children: <Widget>[
         Container(
-          decoration: BoxDecoration(color: Colors.blueAccent),
+          decoration: BoxDecoration(color: Colors.white),
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -46,17 +46,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      "FitnessBudds",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.bold),
-                    ),
                     Padding(
                       padding: EdgeInsets.only(top: 10.0),
                     ),
-                    Image.asset("assets/bodybuilderflex.gif"),
+                    Image.asset("assets/fitnessbuddslogo.jpg"),
                     Padding(
                       padding: EdgeInsets.only(top: 10.0),
                     ),
@@ -73,13 +66,13 @@ class _SplashScreenState extends State<SplashScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 20.0),
                   ),
-                  Text(
-                    "Find your perfect Trainer",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold),
-                  )
+//                  Text(
+//                    "Find your perfect Trainer",
+//                    style: TextStyle(
+//                        color: Colors.white,
+//                        fontSize: 18.0,
+//                        fontWeight: FontWeight.bold),
+//                  )
                 ],
               ),
             ),
