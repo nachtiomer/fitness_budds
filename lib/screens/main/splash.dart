@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-
-import 'authorizationPages/login.dart';
+import 'package:fitnessbudds/screens/main/login.dart';
+import 'package:fitnessbudds/initializers/applicationInit.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -13,11 +12,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
-      );
+    initApplication().then((bool success) {
+      if (success) {
+        Timer(Duration(seconds: 3), () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => LoginPage()),
+          );
+        });
+      }
     });
   }
 
