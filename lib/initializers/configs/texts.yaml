@@ -1,0 +1,7 @@
+heb:
+    home_page:
+        hello: שלום
+
+eng:
+    home_page:
+        hello: hello
