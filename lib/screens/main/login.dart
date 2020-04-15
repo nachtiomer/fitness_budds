@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
     List<ProviderDetails> providerData = List<ProviderDetails>();
     providerData.add(providerInfo);
 
-    User details = User(
+    User user = User(
       userDetails.providerId ?? 'email',
       userDetails.displayName ?? _email,
       userDetails.photoUrl ?? '',
@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ProfileScreen(detailsUser: details),
+          builder: (context) => ProfileScreen(user: user),
         ));
     return userDetails;
   }

@@ -4,9 +4,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:fitnessbudds/models/user.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final User detailsUser;
+  final User user;
 
-  ProfileScreen({Key key, @required this.detailsUser}) : super(key: key);
+  ProfileScreen({Key key, @required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(detailsUser.userName),
+          title: Text(user.userName),
           automaticallyImplyLeading: false,
           actions: <Widget>[
             IconButton(
@@ -36,12 +36,12 @@ class ProfileScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               CircleAvatar(
-                backgroundImage: NetworkImage(detailsUser.photoUrl),
+                backgroundImage: NetworkImage(user.photoUrl),
                 radius: 50.0,
               ),
               SizedBox(height: 10.0),
               Text(
-                "Name : " + detailsUser.userName,
+                "Name : " + user.userName,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -49,7 +49,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               SizedBox(height: 10.0),
               Text(
-                "Email : " + detailsUser.userEmail,
+                "Email : " + user.userEmail,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -57,7 +57,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               SizedBox(height: 10.0),
               Text(
-                "Provider : " + detailsUser.providerDetails,
+                "Provider : " + user.providerDetails,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
