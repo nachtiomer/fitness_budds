@@ -21,23 +21,6 @@ class AppState {
   }
 }
 
-AppState appReducer(AppState prevState, dynamic action) {
-  AppState newState = AppState.duplicate(prevState);
-
-  newState.authorization =
-      authorizationReducer(prevState.authorization, action);
-
-  return newState;
-}
-
-// class Connect extends InheritedWidget {
-//   static Connect of(BuildContext context) =>
-//       context.dependOnInheritedWidgetOfExactType<Connect>();
-//   Connect({Key key, Widget child}) : super(key: key, child: child);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return StoreConnector<AppState, AppState>(
-//         converter: (store) => store.state, builder: (context, state) {});
-//   }
-// }
+AppState appReducer(AppState prevState, dynamic action) => AppState(
+      authorization: authorizationReducer(prevState.authorization, action),
+    );
