@@ -4,7 +4,7 @@ import 'package:fitnessbudds/screens/main/splash.dart';
 
 void main() {
   return runApp(MaterialApp(
-    theme: ThemeData(primaryColor: Colors.amber, accentColor: Colors.amber),
+    theme: ThemeData(primaryColor: Colors.amber, accentColor: Colors.amberAccent),
     debugShowCheckedModeBanner: false,
     home: Center(child: SplashScreen()),
   ));

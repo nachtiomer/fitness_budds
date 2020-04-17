@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessbudds/models/user.dart';
 import 'package:fitnessbudds/models/providerDetails.dart';
+import 'package:fitnessbudds/screens/main/registerFirstPage.dart';
 import 'package:fitnessbudds/utils/loginMehthods.dart';
 import 'package:flutter/material.dart';
 import './ProfileScreen.dart';
@@ -51,17 +52,36 @@ class _LoginPageState extends State<LoginPage> {
     List<ProviderDetails> providerData = List<ProviderDetails>();
     providerData.add(providerInfo);
 
+    // TODO: something smarter
+    String genderPreference;
+    String birthDate;
+    String gender;
+    String level;
+    String age;
+    List<String> mainCities;
+    List<String> friendsList;
+    List<String> perfectTrainers;
+    List<String> activityPreference;
     User user = User(
-      userDetails.providerId ?? 'email',
-      userDetails.displayName ?? _email,
-      userDetails.photoUrl ?? '',
-      userDetails.email ?? _email,
-      providerData ?? '',
-    );
+        genderPreference,
+        userDetails.providerId,
+        userDetails.displayName,
+        userDetails.photoUrl,
+        userDetails.email,
+        birthDate,
+        level,
+        age,
+        mainCities,
+        friendsList,
+        activityPreference,
+        providerData,
+        perfectTrainers,
+        gender);
+
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ProfileScreen(user: user),
+          builder: (context) => RegisterFirstPage(user:user),//ProfileScreen(user: user),
         ));
     return userDetails;
   }
