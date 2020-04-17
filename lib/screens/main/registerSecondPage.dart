@@ -2,10 +2,32 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 final Color backgroundColor = Colors.teal;
+
+class WorkoutCategory {
+  bool selected;
+  IconData icon;
+  WorkoutCategory({this.icon, this.selected});
+
+  WorkoutCategory.initial(IconData icon) {
+    this.icon = icon;
+    this.selected = false;
+  }
+}
+
+class PrioritySlider {
+  double value;
+  String title;
+
+  PrioritySlider({this.value, this.title});
+
+  PrioritySlider.initial(String title) {
+    this.value = 2.0;
+    this.title = title;
+  }
+}
 
 class RegisterSecondPage extends StatefulWidget {
   @override
@@ -15,105 +37,95 @@ class RegisterSecondPage extends StatefulWidget {
 class _RegisterSecondPageState extends State<RegisterSecondPage>
     with SingleTickerProviderStateMixin {
   int _selectedGender = 0;
-  List<int> _selected = [0, 0, 0, 0, 0, 0, 0, 0];
+  final Map<String, WorkoutCategory> _categories = {
+    'running': WorkoutCategory.initial(FontAwesomeIcons.running),
+    'groups': WorkoutCategory.initial(FontAwesomeIcons.users),
+    'power': WorkoutCategory.initial(FontAwesomeIcons.dumbbell),
+    'meditation': WorkoutCategory.initial(FontAwesomeIcons.bed),
+    'disabled': WorkoutCategory.initial(FontAwesomeIcons.accessibleIcon),
+    'football': WorkoutCategory.initial(FontAwesomeIcons.futbol),
+    'swimming': WorkoutCategory.initial(FontAwesomeIcons.swimmer)
+  };
   double screenWidth, screenHeight;
-  double val = 2.0;
-  double valPrice =2.0;
-  double valAvailability =2.0;
-  double valRecommendation =2.0;
-  double valExperience =2.0;
+  Map<String, PrioritySlider> _sliders = {
+    'price': PrioritySlider.initial('מחיר'),
+    'availability': PrioritySlider.initial('זמינות'),
+    'recommendation': PrioritySlider.initial('המלצות'),
+    'expirience': PrioritySlider.initial('נסיון'),
+    'distance': PrioritySlider.initial('מרחק')
+  };
 
-  bool _isVisible = false;
+  bool _isTrainerGenderVisible = false;
 
   List<IconData> _gender = [FontAwesomeIcons.male, FontAwesomeIcons.female];
 
-  List<IconData> _icons = [
-    FontAwesomeIcons.running,
-    FontAwesomeIcons.users,
-    FontAwesomeIcons.dumbbell,
-    FontAwesomeIcons.bed,
-    FontAwesomeIcons.accessibleIcon,
-    FontAwesomeIcons.futbol,
-    FontAwesomeIcons.swimmer,
-    FontAwesomeIcons.plus
-  ];
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    screenHeight = size.height;
-    screenWidth = size.width;
-
-    return Scaffold(backgroundColor: backgroundColor, body: SecondPage());
-  }
-
-  Widget _buildIcon(int index) {
+  Widget _buildIcon(String key) {
     return GestureDetector(
         onTap: () {
           setState(() {
-            if (_selected[index] == index) {
-              _selected[index] = null;
-            } else {
-              _selected[index] = index;
-            }
+            _categories[key].selected = !_categories[key].selected;
           });
         },
         child: Container(
           height: 60.0,
           width: 60.0,
           decoration: BoxDecoration(
-              color: _selected[index] == index ? Colors.teal : Colors.grey,
+              color: _categories[key].selected ? Colors.teal : Colors.grey,
               borderRadius: BorderRadius.circular(30)),
-          child: Icon(_icons[index],
+          child: Icon(_categories[key].icon,
               size: 25.0,
-              color: _selected[index] == index
+              color: _categories[key].selected
                   ? Colors.black
                   : Colors.black54), //Theme.of(context).primaryColor),
         ));
   }
 
-  Widget _buildSlider(String title) {
-    if(title == "מחיר"){
-      val = valPrice;
-    }else if(title == "זמינות"){
-      val = valAvailability;
-    }else if(title == "ניסיון"){
-      val = valExperience;
-    }else if(title == "ביקורות"){
-      val = valRecommendation;
-    }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 5.0, right: 10.0),
-          child: Text(
-            title,
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Row(
-          textDirection: TextDirection.rtl,
-          children: <Widget>[
-            Expanded(
-              child: Slider(
-                  value: val,
-                  onChanged: (double e) => setState(() {
-                    val = e;
-                  }),
-                  activeColor: Colors.teal,
-                  inactiveColor: Colors.grey,
-                  label: title,
-                  max: 10.0,
-                  min: 1.0),
-            ),
-          ],
-        ),
-      ],
-    );
+  Widget _buildSlider(String key) {
+    PrioritySlider slider = _sliders[key];
+    return Padding(
+        padding: EdgeInsets.only(top: 5.0),
+        child: Container(
+            decoration: BoxDecoration(color: Colors.white, boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.8),
+                spreadRadius: 2,
+                blurRadius: 2,
+                offset: Offset(0, 3), // Change Position of shadow
+              )
+            ]),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 5.0, right: 10.0),
+                  child: Text(
+                    slider.title,
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Row(
+                  textDirection: TextDirection.rtl,
+                  children: <Widget>[
+                    Expanded(
+                      child: Slider(
+                          value: slider.value,
+                          onChanged: (double e) => setState(() {
+                                slider.value = e;
+                              }),
+                          activeColor: Colors.teal,
+                          inactiveColor: Colors.grey,
+                          label: slider.title,
+                          max: 10.0,
+                          min: 1.0),
+                    ),
+                  ],
+                ),
+              ],
+            )));
   }
 
   Widget _buildGenderIcon(int index) {
@@ -141,20 +153,26 @@ class _RegisterSecondPageState extends State<RegisterSecondPage>
         ));
   }
 
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    screenHeight = size.height;
+    screenWidth = size.width;
 
-  Widget SecondPage() {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.all(20.0),
           children: <Widget>[
-            Text("מציאת המאמן המושלם",
+            Text(
+              "מציאת המאמן המושלם",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 25.0,
                 fontWeight: FontWeight.bold,
-              ),),
+              ),
+            ),
             Text(
               "סמן פעילויות מועדפות",
               textAlign: TextAlign.right,
@@ -165,34 +183,24 @@ class _RegisterSecondPageState extends State<RegisterSecondPage>
             ),
             SizedBox(height: 20.0),
             Row(
-              children: _icons
-                  .asMap()
-                  .entries
-                  .map((MapEntry map) => _buildIcon(map.key))
-                  .toList()
-                  .sublist(0, 4),
+              children: _categories.keys.take(4).map(_buildIcon),
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             ),
             SizedBox(height: 10.0),
             Row(
-              children: _icons
-                  .asMap()
-                  .entries
-                  .map((MapEntry map) => _buildIcon(map.key))
-                  .toList()
-                  .sublist(4),
+              children: _categories.keys.skip(4).map(_buildIcon),
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             ),
             SizedBox(height: 20.0),
             RaisedButton(
                 onPressed: () {
                   setState(() {
-                    _isVisible =!_isVisible;
+                    _isTrainerGenderVisible = !_isTrainerGenderVisible;
                   });
                 },
                 child: Text('חשוב לי מין המאמן')),
             Visibility(
-              child:Row(
+              child: Row(
                 children: _gender
                     .asMap()
                     .entries
@@ -200,9 +208,11 @@ class _RegisterSecondPageState extends State<RegisterSecondPage>
                     .toList(),
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               ),
-              visible: _isVisible,
+              visible: _isTrainerGenderVisible,
             ),
-            SizedBox(height: 20.0,),
+            SizedBox(
+              height: 20.0,
+            ),
             Text(
               "סדר לפי חשיבות ",
               textAlign: TextAlign.right,
@@ -212,66 +222,8 @@ class _RegisterSecondPageState extends State<RegisterSecondPage>
               ),
             ),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 5.0),
-                  child: Container(
-                      decoration:
-                          BoxDecoration(color: Colors.white, boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.8),
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: Offset(0, 3), // Change Position of shadow
-                        )
-                      ]),
-                      child: _buildSlider("מחיר")),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.0),
-                  child: Container(
-                      decoration:
-                          BoxDecoration(color: Colors.white, boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.8),
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: Offset(0, 3), // Change Position of shadow
-                        )
-                      ]),
-                      child: _buildSlider("זמינות")),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.0),
-                  child: Container(
-                      decoration:
-                          BoxDecoration(color: Colors.white, boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.8),
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: Offset(0, 3), // Change Position of shadow
-                        )
-                      ]),
-                      child: _buildSlider("ניסיון")),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.0),
-                  child: Container(
-                      decoration:
-                          BoxDecoration(color: Colors.white, boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.8),
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: Offset(0, 3), // Change Position of shadow
-                        )
-                      ]),
-                      child: _buildSlider("ביקורות")),
-                ),
-              ],
-            ),
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: _sliders.keys.map(_buildSlider)),
           ],
         ),
       ),
