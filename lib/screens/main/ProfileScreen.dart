@@ -1,3 +1,4 @@
+import 'package:fitnessbudds/screens/main/coachesScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -63,6 +64,33 @@ class ProfileScreen extends StatelessWidget {
                     color: Colors.black,
                     fontSize: 20.0),
               ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "Coaches" ,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 20.0),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      FontAwesomeIcons.arrowRight,
+                      size: 20.0,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CoachesScreen(),
+                          ));
+                    },
+                  )
+                ],
+              )
             ],
           ),
         ));
