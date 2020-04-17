@@ -10,16 +10,26 @@ class CoachesScreen extends StatefulWidget {
 class _CoachesScreenState extends State<CoachesScreen>  {
   final COACHES = [
     Coach(
-        'Dana',
+        'Daniel',
         'https://daniel-t.co.il/wp-content/uploads/2016/12/Personal-fitness-trainer-in-Rishon-Letzion.jpg',
         'Haifa',
         'Never give up'
+    ),
+    Coach(
+        'Dor',
+        'https://static.vecteezy.com/system/resources/previews/000/153/703/non_2x/free-personal-trainer-illustration-vector.jpg',
+        'Naharia',
+        'No pain no gain!'
     )
   ];
 
   List<Coach> coaches= List<Coach>();
   TextEditingController controller = new TextEditingController();
   String filter;
+
+  bool isCoachVisible(coach,filter) {
+    return filter == null || filter == "" || coach.displayname.toLowerCase().contains(filter.toLowerCase());
+  }
 
   @override
   initState() {
@@ -60,13 +70,13 @@ class _CoachesScreenState extends State<CoachesScreen>  {
             itemCount: coaches.length,
             itemBuilder: (BuildContext context, int index) {
               var coach = coaches[index];
-              return new ListTile(
+              return isCoachVisible(coach, filter) ? new ListTile(
                 leading: CircleAvatar(
                   backgroundImage: NetworkImage(coach.photoUrl),
                   radius: 50.0,
                 ),
                 title: Text(coach.displayname),
-              );
+              ): new Container();
             }
           )
         ));
