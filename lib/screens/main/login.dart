@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessbudds/models/user.dart';
 import 'package:fitnessbudds/models/providerDetails.dart';
+import 'package:fitnessbudds/state/actions/authorizationActions.dart';
+import 'package:fitnessbudds/state/appState.dart';
 import 'package:fitnessbudds/utils/loginMehthods.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import './ProfileScreen.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
@@ -22,9 +25,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String _password, _email, _errorMessage;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FirebaseAuth _firebaseAuth;
+  dynamic dispatch;
   var loggedIn = false;
-  var firebaseAuth = FirebaseAuth.instance;
 
   void initiateSignIn(LoginMethods type) {
     _handleSignIn(type).then((result) {
@@ -37,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<FirebaseUser> _handleSignIn(LoginMethods type) async {
-    AuthResult result; // = loginmethod()
+    AuthResult result;
 
     if (type == LoginMethods.EMAIL) {
       result = await _logIn();
@@ -58,10 +61,15 @@ class _LoginPageState extends State<LoginPage> {
       userDetails.email ?? _email,
       providerData ?? '',
     );
+
+    if (dispatch != null) {
+      dispatch(LoginAction(user));
+    }
+
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ProfileScreen(user: user),
+          builder: (context) => ProfileScreen(),
         ));
     return userDetails;
   }
@@ -98,54 +106,60 @@ class _LoginPageState extends State<LoginPage> {
       _errorMessage = '';
     }
 
-    return Form(
-        key: _formKey,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("Fitness Budds"),
-          ),
-          body: Container(
-            margin: EdgeInsets.all(20),
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  validator: (String input) => !_validateEmail(input)
-                      ? 'Please enter a valid Email'
-                      : null,
-                  onSaved: (input) => _email = input,
-                  decoration: InputDecoration(labelText: 'Email'),
+    return StoreConnector<AppState, AppState>(
+        converter: (store) => store.state,
+        builder: (context, state) {
+          dispatch = StoreProvider.of<AppState>(context).dispatch;
+          _firebaseAuth = state.authorization.firebaseAuth;
+          return Form(
+              key: _formKey,
+              child: Scaffold(
+                appBar: AppBar(
+                  title: Text("Fitness Budds"),
                 ),
-                TextFormField(
-                  validator: (String input) => !_validatePassword(input)
-                      ? 'Please enter a valid Password'
-                      : null,
-                  onSaved: (input) => _password = input,
-                  decoration: InputDecoration(labelText: 'Password'),
-                  obscureText: true,
+                body: Container(
+                  margin: EdgeInsets.all(20),
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        validator: (String input) => !_validateEmail(input)
+                            ? 'Please enter a valid Email'
+                            : null,
+                        onSaved: (input) => _email = input,
+                        decoration: InputDecoration(labelText: 'Email'),
+                      ),
+                      TextFormField(
+                        validator: (String input) => !_validatePassword(input)
+                            ? 'Please enter a valid Password'
+                            : null,
+                        onSaved: (input) => _password = input,
+                        decoration: InputDecoration(labelText: 'Password'),
+                        obscureText: true,
+                      ),
+                      RaisedButton(
+                          onPressed: () {
+                            initiateSignIn(LoginMethods.EMAIL);
+                          },
+                          child: Text('התחבר')),
+                      Text(_errorMessage),
+                      SignInButton(
+                        Buttons.Google,
+                        text: "Sign up with Google",
+                        onPressed: () {
+                          initiateSignIn(LoginMethods.GOOGLE);
+                        },
+                      ),
+                      SignInButton(
+                        Buttons.Facebook,
+                        text: "Sign up with Facebook",
+                        onPressed: () {
+                          initiateSignIn(LoginMethods.FACEBOOK);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-                RaisedButton(
-                    onPressed: () {
-                      initiateSignIn(LoginMethods.EMAIL);
-                    },
-                    child: Text('התחבר')),
-                Text(_errorMessage),
-                SignInButton(
-                  Buttons.Google,
-                  text: "Sign up with Google",
-                  onPressed: () {
-                    initiateSignIn(LoginMethods.GOOGLE);
-                  },
-                ),
-                SignInButton(
-                  Buttons.Facebook,
-                  text: "Sign up with Facebook",
-                  onPressed: () {
-                    initiateSignIn(LoginMethods.FACEBOOK);
-                  },
-                ),
-              ],
-            ),
-          ),
-        ));
+              ));
+        });
   }
 }

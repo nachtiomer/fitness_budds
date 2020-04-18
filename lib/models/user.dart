@@ -1,6 +1,8 @@
 import './providerDetails.dart';
 
 class User{
+
+  final String uid;
   final String providerDetails;
   final String userName;
   final String photoUrl;
@@ -8,5 +10,5 @@ class User{
   final List<ProviderDetails> providerData;
 
   User(this.providerDetails, this.userName, this.photoUrl,
-      this.userEmail, this.providerData);
+      this.userEmail, this.providerData, [this.uid]);
 }
