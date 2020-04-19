@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessbudds/models/user.dart';
 import 'package:fitnessbudds/models/providerDetails.dart';
-import 'package:fitnessbudds/screens/main/registerFirstPage.dart';
+import 'package:fitnessbudds/screens/main/registerScreen/registerFirstPage.dart';
 import 'package:fitnessbudds/utils/loginMehthods.dart';
 import 'package:flutter/material.dart';
 import './ProfileScreen.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+
 
 class LoginPage extends StatefulWidget {
   final Map<LoginMethods, Function> _loginMethods = {
@@ -54,11 +55,12 @@ class _LoginPageState extends State<LoginPage> {
 
     // TODO: something smarter
     String genderPreference;
-    String birthDate;
+    DateTime birthDate;
     String gender;
     String level;
     String age;
-    List<String> mainCities;
+    String workoutCity;
+    String phoneNumber;
     List<String> friendsList;
     List<String> perfectTrainers;
     List<String> activityPreference;
@@ -71,7 +73,8 @@ class _LoginPageState extends State<LoginPage> {
         birthDate,
         level,
         age,
-        mainCities,
+        workoutCity,
+        phoneNumber,
         friendsList,
         activityPreference,
         providerData,

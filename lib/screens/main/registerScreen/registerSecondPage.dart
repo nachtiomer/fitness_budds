@@ -3,12 +3,14 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:fitnessbudds/screens/main/registerScreen/addActivityPage.dart';
 
 final Color backgroundColor = Colors.teal;
 
 class WorkoutCategory {
   bool selected;
   IconData icon;
+
   WorkoutCategory({this.icon, this.selected});
 
   WorkoutCategory.initial(IconData icon) {
@@ -37,6 +39,7 @@ class RegisterSecondPage extends StatefulWidget {
 class _RegisterSecondPageState extends State<RegisterSecondPage>
     with SingleTickerProviderStateMixin {
   int _selectedGender = 0;
+  List<String> activityPreference;
   final Map<String, WorkoutCategory> _categories = {
     'running': WorkoutCategory.initial(FontAwesomeIcons.running),
     'groups': WorkoutCategory.initial(FontAwesomeIcons.users),
@@ -48,11 +51,11 @@ class _RegisterSecondPageState extends State<RegisterSecondPage>
   };
   double screenWidth, screenHeight;
   Map<String, PrioritySlider> _sliders = {
-    'price': PrioritySlider.initial('מחיר'),
-    'availability': PrioritySlider.initial('זמינות'),
-    'recommendation': PrioritySlider.initial('המלצות'),
-    'expirience': PrioritySlider.initial('נסיון'),
-    'distance': PrioritySlider.initial('מרחק')
+    'price': PrioritySlider.initial('מחיר נמוך'),
+    'availability': PrioritySlider.initial('זמינות גבוהה'),
+    'recommendation': PrioritySlider.initial('ביקורות טובות'),
+    'expirience': PrioritySlider.initial('נסיון מרובה'),
+    'distance': PrioritySlider.initial('מרחק קטן')
   };
 
   bool _isTrainerGenderVisible = false;
@@ -64,6 +67,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage>
         onTap: () {
           setState(() {
             _categories[key].selected = !_categories[key].selected;
+//            activityPreference.contains(key) ? activityPreference.remove(key) : activityPreference.add(key);
           });
         },
         child: Container(
@@ -85,6 +89,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage>
     return Padding(
         padding: EdgeInsets.only(top: 5.0),
         child: Container(
+            height: 80,
             decoration: BoxDecoration(color: Colors.white, boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.8),
@@ -96,16 +101,33 @@ class _RegisterSecondPageState extends State<RegisterSecondPage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 5.0, right: 10.0),
-                  child: Text(
-                    slider.title,
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 5.0, left: 20.0),
+                      child: Text(
+                        slider.value.toInt().toString(),
+                        // < 5 ? "לא חשוב" : "חשוב",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          fontSize: 10 + slider.value / 3,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5.0, right: 10.0),
+                      child: Text(
+                        slider.title,
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   textDirection: TextDirection.rtl,
@@ -183,13 +205,28 @@ class _RegisterSecondPageState extends State<RegisterSecondPage>
             ),
             SizedBox(height: 20.0),
             Row(
-              children: _categories.keys.take(4).map(_buildIcon),
+              children: _categories.keys.take(4).map(_buildIcon).toList(),
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             ),
             SizedBox(height: 10.0),
             Row(
-              children: _categories.keys.skip(4).map(_buildIcon),
+              children: _categories.keys.skip(4).map(_buildIcon).toList(),
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+              heroTag: "11111",
+              child: Icon(FontAwesomeIcons.plus),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          AddActivityPage(), //ProfileScreen(user: user),
+                    ));
+              },
             ),
             SizedBox(height: 20.0),
             RaisedButton(
@@ -223,7 +260,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage>
             ),
             Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: _sliders.keys.map(_buildSlider)),
+                children: _sliders.keys.map(_buildSlider).toList()),
           ],
         ),
       ),
