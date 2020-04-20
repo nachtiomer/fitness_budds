@@ -6,6 +6,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 void main() {
+
   final AppState _initialState = AppState.initial();
   final Store<AppState> _store =
       Store<AppState>(appReducer, initialState: _initialState);

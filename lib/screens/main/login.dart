@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessbudds/models/user.dart';
 import 'package:fitnessbudds/models/providerDetails.dart';
+import 'package:fitnessbudds/screens/main/registerScreen/registerFirstPage.dart';
 import 'package:fitnessbudds/state/actions/authorizationActions.dart';
 import 'package:fitnessbudds/state/appState.dart';
 import 'package:fitnessbudds/utils/loginMehthods.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import './ProfileScreen.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+
 
 class LoginPage extends StatefulWidget {
   final Map<LoginMethods, Function> _loginMethods = {
@@ -54,13 +55,33 @@ class _LoginPageState extends State<LoginPage> {
     List<ProviderDetails> providerData = List<ProviderDetails>();
     providerData.add(providerInfo);
 
+    // TODO: something smarter
+    String genderPreference;
+    DateTime birthDate;
+    String gender;
+    String level;
+    String age;
+    String workoutCity;
+    String phoneNumber;
+    List<String> friendsList;
+    List<String> perfectTrainers;
+    List<String> activityPreference;
     User user = User(
-      userDetails.providerId ?? 'email',
-      userDetails.displayName ?? _email,
-      userDetails.photoUrl ?? '',
-      userDetails.email ?? _email,
-      providerData ?? '',
-    );
+        genderPreference,
+        userDetails.providerId ?? 'email',
+        userDetails.displayName ?? _email,
+        userDetails.photoUrl ?? '',
+        userDetails.email ?? _email,
+        birthDate,
+        level,
+        age,
+        workoutCity,
+        phoneNumber,
+        friendsList,
+        activityPreference,
+        providerData ?? '',
+        perfectTrainers,
+        gender);
 
     if (dispatch != null) {
       dispatch(LoginAction(user));
@@ -69,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ProfileScreen(),
+          builder: (context) => RegisterFirstPage(user:user),//ProfileScreen(user: user),
         ));
     return userDetails;
   }
