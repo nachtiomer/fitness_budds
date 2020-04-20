@@ -1,6 +1,7 @@
 import './providerDetails.dart';
 
 class User {
+  String uid;
   String genderPreference;
   String providerDetails;
   String userName;
@@ -17,6 +18,10 @@ class User {
   List<String> activityPreference;
   List<ProviderDetails> providerData;
 
+  factory User.empty(){
+    return User("","","","","",DateTime.now(),"","","","",List<String>(),List<String>(),List<ProviderDetails>(),List<String>(),"","");
+  }
+
   User(
       this.genderPreference,
       this.providerDetails,
@@ -32,5 +37,7 @@ class User {
       this.activityPreference,
       this.providerData,
       this.perfectTrainers,
-      this.gender);
+      this.gender,
+      [this.uid]);
+
 }
